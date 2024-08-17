@@ -51,6 +51,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
+import androidx.compose.ui.platform.ComposeView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -103,6 +104,8 @@ import org.schabi.newpipe.player.playqueue.PlayQueueItem;
 import org.schabi.newpipe.player.playqueue.SinglePlayQueue;
 import org.schabi.newpipe.player.ui.MainPlayerUi;
 import org.schabi.newpipe.player.ui.VideoPlayerUi;
+import org.schabi.newpipe.ui.ComposeUtil;
+import org.schabi.newpipe.ui.VideoDetailViewModel;
 import org.schabi.newpipe.util.Constants;
 import org.schabi.newpipe.util.DeviceUtils;
 import org.schabi.newpipe.util.ExtractorHelper;
@@ -552,10 +555,10 @@ public final class VideoDetailFragment
         }));
 
         binding.detailControlsBackground.setOnLongClickListener(makeOnLongClickListener(info ->
-            openBackgroundPlayer(true)
+                openBackgroundPlayer(true)
         ));
         binding.detailControlsPopup.setOnLongClickListener(makeOnLongClickListener(info ->
-            openPopupPlayer(true)
+                openPopupPlayer(true)
         ));
         binding.detailControlsDownload.setOnLongClickListener(makeOnLongClickListener(info ->
                 NavigationHelper.openDownloads(activity)));
@@ -626,6 +629,13 @@ public final class VideoDetailFragment
                         ? View.VISIBLE
                         : View.GONE
         );
+
+        final VideoDetailViewModel viewModel = new VideoDetailViewModel();
+        ComposeUtil.INSTANCE.setDetailControlPanel(
+                (ComposeView) binding.detailControlPanel,
+                viewModel
+        );
+
         accommodateForTvAndDesktopMode();
     }
 
